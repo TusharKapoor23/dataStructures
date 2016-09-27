@@ -1,4 +1,5 @@
 package datastructures;
+import java.util.Scanner;
 import java.util.*;
 public class BinarySearchTree {
     
