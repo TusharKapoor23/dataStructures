@@ -19,24 +19,17 @@ public class DPFibonnaciTopDown {
     
     public static int fiboTD(int n){
         if(n == 0){
-            fib[x] = 1;
-            x++;
-            return fib[x];
+            return 0;
         }
         if(n == 1){
-            fib[x] = 1;
-            x++;
-            return fib[x];
+            return 1;
         }
-        if(fib[x] != 0){
-            return fib[x];
+        if(fib[n] != 0){
+            return fib[n];
         }
         else{
-            fib[x] = fiboTD(n - 1) + fiboTD(n - 2);
-            x++;
-            return fib[x];
-        }
-                    
-                   
+            fib[n] = fiboTD(n - 1) + fiboTD(n - 2);
+            return fib[n];
+        }     
     }
 }
