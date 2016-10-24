@@ -5,7 +5,7 @@ import java.util.*;
 public class PrimsAlgorithm {
     private static int v = 5;
     
-    public static int minKey(int key[], boolean mst[]){
+    public static int minKey(int key[], boolean mst[],int v){
         int min = Integer.MAX_VALUE, min_index = -1;
         for (int i = 0; i < v; i++) {
             if(mst[i] == false && key[i] < min){
@@ -16,14 +16,15 @@ public class PrimsAlgorithm {
         return min_index;
     }
     
-    public static void printMST(int parent[], int n, int graph[][]){
+    public static void printMST(int parent[], int v, int graph[][]){
+        GooglePrims g = new GooglePrims();
         System.out.println("Edge    Weight");
         for (int i = 1; i < v; i++) {
-            System.out.println(parent[i]+"--"+ i + "    "  + graph[i][parent[i]]);
+            System.out.println(g.cities[parent[i]]+"--"+ g.cities[i] + "    "  + graph[i][parent[i]]);
         }
     }
     
-    public static void prim(int graph[][]){
+    public static void prim(int graph[][], int v){
         //Array to store the answer
         int parent[] = new int[v];
         
@@ -46,7 +47,7 @@ public class PrimsAlgorithm {
         for (int i = 0; i < v-1; i++) {
             
             //Pick minimum key from the set fo vertices not yet in parent.
-            int u = minKey(key, mst);
+            int u = minKey(key, mst, v);
             //Added picked vertex to MST.
             mst[u] = true;
             //Update the value of the key and parent for adjacent vertex of picked vertex.
@@ -76,7 +77,7 @@ public class PrimsAlgorithm {
                 graph[i][j] = s.nextInt();
             }
         }
-        t.prim(graph);
+        t.prim(graph,v);
         
     }
     

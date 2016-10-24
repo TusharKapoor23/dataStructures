@@ -11,8 +11,9 @@ import org.jsoup.Jsoup;
  * 
  */
 public class GooglePrims {
-    public static void makeRow(String origin,String destination,int i) throws IOException{
+    public static void makeRow(String origin, String destination,int i) throws IOException{
         String request = "https://maps.googleapis.com/maps/api/distancematrix/json?origins="+origin+"&"+"destinations="+destination+"&key=AIzaSyDzxDG_h6SCZSIOC_RB5aaGZmUBOWGZNpQ";
+        System.out.println(request);
         String doc = Jsoup.connect(request).ignoreContentType(true).execute().body();
         JsonParser jsonParser = new JsonParser();
         JsonObject distance = (JsonObject) jsonParser.parse(doc);
@@ -23,37 +24,56 @@ public class GooglePrims {
         int j = 0;
         while(n < dist.size()){
             JsonObject value = dist.get(n).getAsJsonObject();
-            graph[i][j] = value.get("distance").getAsJsonObject().get("value").getAsLong();
+            graph[i][j] = value.get("distance").getAsJsonObject().get("value").getAsInt();
             j++;
             n++;
         }
     }
     
-    public static long graph[][] = new long[5][5];
+    public static int graph[][];
+    public static String cities[];
     
     public static void main(String[] args) throws IOException {
         Scanner s = new Scanner(System.in);
-        System.out.println("Enter the origin");
-        String origin = s.next();
-        System.out.println("Enter the destination");
-        String destination = s.next();
-        makeRow(origin, destination, 0);
-        System.out.println("Enter the origin");
-        origin = s.next();
-        System.out.println("Enter the destination");
-        destination = s.next();
-        makeRow(origin, destination, 1);
-        System.out.println("Enter the origin");
-        origin = s.next();
-        System.out.println("Enter the destination");
-        destination = s.next();
-        makeRow(origin, destination, 2);
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
+        
+        System.out.println("Enter the number of cities");
+        int n = s.nextInt();
+        graph = new int[n][n];
+        
+        System.out.println("Enter list of cities");
+        cities = new String[n];
+        
+        for (int i = 0; i < n; i++) {
+            cities[i] = s.next();
+        }
+        
+        StringBuilder destinations = new StringBuilder();
+        
+        for (String city : cities) {
+           destinations.append(city);
+           destinations.append("|");
+        }
+        
+        destinations.deleteCharAt(destinations.length() - 1);        
+        
+        for (int i = 0; i < n; i++) {
+            makeRow(cities[i], destinations.toString(), i);
+        }
+        
+        /* 
+        //To display the adjacency matrix
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
                 System.out.print(graph[i][j]+"\t");
             }
             System.out.println("");
         }
+        */
+        
+        PrimsAlgorithm p = new PrimsAlgorithm();
+       
+        p.prim(graph, n);
+        
     }
     
 }
